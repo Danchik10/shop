@@ -1,0 +1,40 @@
+{% extends "products/base.html" %} {% block content %}
+<section>
+  <ul>
+    {% for category in categories %}
+    <li>
+      <a href="{% url 'products:category' category.id %}">
+        {{ category.name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+      </div>
+
+      <div class="product-name">
+        <h3 class="product-info">
+          <a href="#"> {{ product.name }} </a>
+        </h3>
+
+        <p class="product-price">{{ product.price }} руб.</p>
+
+        <p class="product-description">{{ product.description }}</p>
+
+        <div class="product-cart">
+          <a href="#"> Добавить в корзину </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

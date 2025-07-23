@@ -1,0 +1,14 @@
+{% extends "products/base.html" %}
+ {% load static %} 
+
+{% block content %}
+<section>
+  <h1>Store</h1>
+  <p>Качественные товары на Store. Скидка -30% при первом заказе</p>
+
+  <button id="" type="button">
+    <a href="{% url 'products:index' %}"> Начать покупки </a>
+  </button>
+</section>
+
+{% endblock %}

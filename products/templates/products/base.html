@@ -1,0 +1,23 @@
+{% load static  %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+       <!-- Шапка -->
+    <header>
+        <h1>Мой магазин</h1>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        {% block content %}
+        <!-- Сюда подставится содержимое из index.html -->
+        {% endblock %}
+    </main>
+</body>
+</html>
