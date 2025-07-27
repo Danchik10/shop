@@ -1,0 +1,1 @@
+[{"model": "products.productscategory", "pk": 1, "fields": {"name": "Мебель", "description": "Для дома и офиса"}}, {"model": "products.productscategory", "pk": 2, "fields": {"name": "Электроника", "description": "Современные гаджеты и устройства"}}]

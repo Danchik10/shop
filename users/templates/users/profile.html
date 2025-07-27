@@ -1,0 +1,46 @@
+{% extends "users/base.html" %} {% load static %} {% block content %}
+
+<div class="header-bar">
+  <h4>Профиль</h4>
+</div>
+<div>
+  <img
+    src="{% if user.image and user.image.url %}{{ user.image.url }}
+    {% else %}{% static 'vendor/img/users/default_avatar.jpg' %}{% endif %}" height="100" width="100"
+  />
+</div>
+<!-- <div>
+  {% if user.image %}
+    <img src="{{ user.image.url }}" height="100" width="100">
+  {% else %}
+    <img src="{% static 'vendor/img/users/default_avatar.jpg' %}" height="100" width="100">
+  {% endif %}
+</div> -->
+<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div>
+    <label for="{{ form.first_name.id_for_label }}">Имя</label>
+    {{ form.first_name }}
+  </div>
+  <div>
+    <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
+    {{ form.last_name }}
+  </div>
+  <div>
+    <label for="{{ form.image.id_for_label }}">Выберите изображение</label>
+    {{ form.image }}
+  </div>
+  <div>
+    <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
+    {{ form.username }}
+  </div>
+  <div>
+    <label for="{{ form.email.id_for_label }}">Адрес электронной почты</label>
+    {{ form.email }}
+  </div>
+  <div><button type="submit">Сохранить</button></div>
+</form>
+
+
+
+{% endblock %}
