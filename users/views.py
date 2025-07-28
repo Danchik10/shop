@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 from users.forms import UserRegistrationForm, UserProfileForm, UserLoginForm
 
+from products.models import Basket
 
 def registration(request):
         # 1. Если запрос POST - обрабатываем форму
@@ -51,10 +53,20 @@ def profile(request):
             return redirect("users:profile")
     else:
         form = UserProfileForm(instance=request.user)
-    context = {'form' : form }
+    
+    baskets = Basket.objects.filter(user=request.user)
+    total_sum = sum(basket.sum() for basket in baskets)
+    total_quantity = sum(basket.quantity for basket in baskets)
+
+    context = {
+        'form' : form,
+        'basket' : Basket.objects.filter(user=request.user),
+        'total_sum' : total_sum,
+        'total_quantity' : total_quantity,
+        }
     return render(request, 'users/profile.html', context)  
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('index')      
+    return HttpResponseRedirect(reverse('index'))       

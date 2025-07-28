@@ -1,0 +1,25 @@
+{% if baskets %}
+<div>
+    <h2>Корзина</h2>
+    <p>{{ total_quantity }}</p>
+</div>
+
+{% for basket in baskets %}
+<div>
+    <h4><strong>{{ basket.product.name }}</strong></h4>
+    <p>{{ basket.product.description }}</p>
+    <p>{{ basket.quantity }}</p>
+    <p>{{ basket.sum }} руб.</p>
+    <a href="{% url 'products:basket_remove' basket.id %}">Удалить товар</a>
+</div>
+{% endfor %}
+
+<div>
+    <p>Итого</p>
+    <p>{{ total_sum }} руб.</p>
+</div>
+
+{% else %}
+<h4>Корзина пуста</h4>
+
+{% endif %}

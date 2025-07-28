@@ -12,6 +12,15 @@
     <header>
         <h1>Мой магазин</h1>
     </header>
+    <div>
+        <ul>
+            <li><a href="{% url 'users:profile' %}">Профиль</a></li>
+            <li><a href="{% url 'users:logout' %}">Выйти</a></li>
+            {% if user.is_superuser or user.is_staff %}
+            <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
+            {% endif %}
+        </ul>
+    </div>
 
     <!-- Основное содержимое -->
     <main>

@@ -2,6 +2,18 @@
 {% load static %}
 
 {% block content %}
+{% if messages or form.non_field_errors %}
+    <div class=
+    "{% if messages %} alert-success {% else %} alert-warning {% endif %}">
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% else %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    </div>
+    {% endif %}
 <h2>Вход</h2>
 <form action="{% url 'users:login' %}" method="post">
     {% csrf_token %}

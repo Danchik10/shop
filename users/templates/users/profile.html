@@ -9,13 +9,7 @@
     {% else %}{% static 'vendor/img/users/default_avatar.jpg' %}{% endif %}" height="100" width="100"
   />
 </div>
-<!-- <div>
-  {% if user.image %}
-    <img src="{{ user.image.url }}" height="100" width="100">
-  {% else %}
-    <img src="{% static 'vendor/img/users/default_avatar.jpg' %}" height="100" width="100">
-  {% endif %}
-</div> -->
+
 <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <div>
@@ -41,6 +35,7 @@
   <div><button type="submit">Сохранить</button></div>
 </form>
 
+<div>{% include 'products/baskets.html' %}</div>
 
 
 {% endblock %}
