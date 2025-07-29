@@ -1,4 +1,4 @@
-{% extends "products/base.html" %}
+{% extends "products/base.html" %} 
 {% block content %}
 <section>
   <ul>
@@ -17,7 +17,12 @@
     {% for product in products %}
     <div class="product-card">
       <div class="product-image">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100" height="100"/>
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          width="100"
+          height="100"
+        />
       </div>
 
       <div class="product-name">
@@ -29,11 +34,11 @@
 
         <p class="product-description">{{ product.description }}</p>
 
-        <!-- <div class="product-cart">
-          <a href="{% url 'products:basket_add' product.id %}"> Добавить в корзину </a>
-        </div> -->
         <div>
-          <form action="{% url 'products:basket_add' product.id %}" method="post">
+          <form
+            action="{% url 'products:basket_add' product.id %}"
+            method="post"
+          >
             {% csrf_token %}
             <button type="submit">Отправить в корзину</button>
           </form>
@@ -43,5 +48,25 @@
     {% endfor %}
   </div>
 </section>
+
+<div>
+  <ul>
+    <li>
+      {% if products.has_previous %}
+      <a href="{% url 'products:paginator' products.previous_page_number %}">Предыдущая</a>
+      {% endif %}
+    </li>
+    {% for page in products.paginator.page_range %} 
+    <li>
+        <a href="{% url 'products:paginator' page %}">{{ page }}</a>
+    </li>
+    {% endfor %}
+    <li>
+      {% if products.has_next %}
+      <a href="{% url 'products:paginator' products.next_page_number %}">Следующая</a>
+      {% endif %}
+    </li>
+  </ul>
+</div>
 
 {% endblock %}
