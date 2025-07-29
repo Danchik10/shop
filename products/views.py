@@ -40,6 +40,10 @@ def basket_add(request, product_id):
 @login_required
 def basket_remove(request, basket_id):
     basket = Basket.objects.get(id=basket_id)
-    basket.delete()
+    if basket.quantity>1:
+        basket.quantity -=1
+        basket.save()
+    else:
+        basket.delete()
     # return render('users:profile')
     return HttpResponseRedirect(request.META['HTTP_REFERER']) 
