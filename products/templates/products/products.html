@@ -1,5 +1,9 @@
 {% extends "products/base.html" %} 
 {% block content %}
+
+<!-- {% load cache %}
+
+{% cache 900 sidebar %} -->
 <section>
   <ul>
     {% for category in categories %}
@@ -11,6 +15,7 @@
     {% endfor %}
   </ul>
 </section>
+<!-- {% endcache %} -->
 
 <section>
   <div class="product-grid">

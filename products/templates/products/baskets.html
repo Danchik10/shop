@@ -15,7 +15,7 @@
 {% endfor %}
 
 <div>
-    <p>Итого</p>
+    <p>Итого:</p>
     <p>{{ total_sum }} руб.</p>
 </div>
 
@@ -23,3 +23,8 @@
 <h4>Корзина пуста</h4>
 
 {% endif %}
+
+<form action="{% url 'orders:order' %}">
+    {% csrf_token %}
+    <button type="submit">Оформить заказ</button>
+</form>

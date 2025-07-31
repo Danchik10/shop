@@ -1,12 +1,23 @@
 from django.db import models
-from users.models import User
+
+# from django.core.cache import cache
+
+from orders.models import Order
 
 class ProductsCategory(models.Model):
     name = models.CharField(max_length=128, unique=True)
     description = models.TextField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.name}"
+    # @classmethod
+    # def get_all_cached(cls):
+    #     categories = cache.get('all_categories')
+    #     if not categories:
+    #         categories = list(cls.objects.all())
+    #         cache.set('all_categories', categories, 60*15)
+    #     return categories
+
+    # def __str__(self):
+    #     return f"{self.name}"
 
 class Product(models.Model):
     name = models.CharField(max_length=256)
@@ -20,7 +31,7 @@ class Product(models.Model):
         return f"Продукт: {self.name} | Категория: {self.category}"
 
 class Basket(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to='users.User', on_delete=models.CASCADE)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=0)
     created_timestamp = models.DateTimeField(auto_now_add=True)

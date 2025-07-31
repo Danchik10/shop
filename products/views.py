@@ -3,7 +3,7 @@ from products.models import Product, ProductsCategory, Basket
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 
 def index(request):
     context = {'title' : 'Store'}
@@ -11,7 +11,7 @@ def index(request):
     return render(request, 'products/index.html', context)
 
 
-@cache_page(60*5) # Кэшируем на 5 минут
+# @cache_page(60* 15) # Кэшируем на 15 минут
 def products(request, category_id = None, page_number=1):
     if category_id:
         category = ProductsCategory.objects.get(id = category_id)
