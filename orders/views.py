@@ -5,29 +5,45 @@ from products.models import Basket
 
 # Create your views here.
 def order(request):
-    basket = Basket.objects.filter(user=request.user)
+    if not request.user.is_authenticated:
+        return redirect('users:login')
+
+    #Получает все товары из корзины текущего пользователя
+    basket_items = Basket.objects.filter(user=request.user)
+
+    #Если корзина пуста - перенаправляет на главную страницу
+    if not basket_items.exists():
+        return redirect('products:index')
+
+    total_price = sum(item.product.price*item.quantity for item in basket_items)
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST)      #Создаёт экземпляр формы с переданными данными
         if form.is_valid():
-            order=form.save()
-            order.user = request.user
-            order.save()
-            #Товары из Basket переносятся в OrderItem.
-            for item in basket:
-                 OrderItem.objects.create(
-                    order=order,
-                    product=item['product'],
-                    price=item['price'],
-                    quantity=item['quantity'])
-            basket.delete()
+            # Создаём и сохраняем заказ
+            try:
+                order=form.save(commit=False)   #commit=False - создаёт объект Order, но не сохраняет в БД
+                order.user = request.user       #Привязывает пользователя
+                order.total_price = total_price  #Устанавливает общую сумму
+                order.status = 'pending'
+                order.save()                    #Сохраняет заказ в БД
+                #Товары из корзины переносятся в заказ.
+                for item in basket_items:
+                    OrderItem.objects.create(
+                        order=order,        #Для каждого товара в корзине создаёт запись OrderItem
+                        product=item.product,
+                        price=item.product.price,
+                        quantity=item.quantity)
+                basket_items.delete()
+                return redirect('products:index')       #Перенаправляет на главную страницу после успешного оформления
+            except Exception as e:
+                print(f"Error saving order: {e}")
 
-            # return render(request, 'orders/order_success.html', {'order' : order})
-
-    else:
-        form=OrderForm()
+    else:                                                       #Обработка GET-запроса (первое открытие страницы)
+        form=OrderForm(initial={'payment_method' : 'card'})     
 
     context = {
         'form' : form,
-        'basket' : basket,
+        'basket' : basket_items,
+        'total_price' : total_price,
     }
     return render(request, 'orders/order.html', context)

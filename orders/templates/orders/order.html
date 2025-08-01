@@ -26,10 +26,8 @@
         <li>{{ item.product.name }} - {{ item.quantity }} шт.</li>
         {% endfor %}
     </ul>
-</form>
+    <p>Итого: {{ total_price }} руб.</p>
 
-<form action="{% url 'users:profile' %}" method="post">
-    {% csrf_token %}
     <button type="submit">Подтвердить заказ</button>
 </form>
 </div>

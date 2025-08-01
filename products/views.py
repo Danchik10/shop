@@ -13,7 +13,7 @@ def index(request):
 
 # @cache_page(60* 15) # Кэшируем на 15 минут
 def products(request, category_id = None, page_number=1):
-    if category_id:
+    if category_id:         #если user нажимает на определенную категорию, выводятся только товары из выбранной категории
         category = ProductsCategory.objects.get(id = category_id)
         products = Product.objects.filter(category=category)
     else:
@@ -29,10 +29,10 @@ def products(request, category_id = None, page_number=1):
     }
     return render(request, 'products/products.html', context)
 
-@login_required
+@login_required              #позволяет не зарегистрированному пользователю добавить товар в корзину
 def basket_add(request, product_id):
-    product = Product.objects.get(id=product_id)
-    baskets = Basket.objects.filter(user=request.user, product=product)
+    product = Product.objects.get(id=product_id)                                #кладем продукт в корзину
+    baskets = Basket.objects.filter(user=request.user, product=product)         #берем все корзины пользователя с определенным продуктом
 
     if not baskets.exists():
         Basket.objects.create(user=request.user, product=product, quantity=1)
