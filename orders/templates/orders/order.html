@@ -6,11 +6,12 @@
         {% csrf_token %}
         <!-- {{ form.as_p }} -->
         <div>
-            <label for="{{ form.shipping_address.id_for_label }}">Адрес</label>
+            <!-- label позволяет создать надпись, которая будет у поля формы -->
+            <label for="{{ form.shipping_address.id_for_label }}">Адрес</label>  
             {{ form.shipping_address }}
         </div>
         <div>
-            <label for="{{ form.phone.id_for_label }}">Номер телефона</label>
+            <label for="{{ form.phone.id_for_label }}">Номер телефона</label> 
             {{ form.phone }}
         </div>
         <div>

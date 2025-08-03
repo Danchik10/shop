@@ -1,5 +1,13 @@
+from rest_framework import generics, viewsets 
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from .permissions import IsAdminOrReadOnly
+from .models import Product, ProductsCategory, Basket
+from .serializers import ProductSerializer
+from rest_framework.views import APIView   #главный класс DRF, связывает запрос с его методом
+from rest_framework.response import Response
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from products.models import Product, ProductsCategory, Basket
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
@@ -28,6 +36,20 @@ def products(request, category_id = None, page_number=1):
         'products' : products_paginator,
     }
     return render(request, 'products/products.html', context)
+
+#--------------------------------API-------------------------------#
+class ProductAPIView(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, IsAdminOrReadOnly)
+
+#action позволяет внутри данного(товары) же представления добавить новый маршрут(например категории)
+    @action(methods=['get'], detail=True)
+    def category(self, request, pk=None):
+        categories = ProductsCategory.objects.get(pk=pk)
+        # return Response({'category' : [c.name for c in category]})
+        return Response({'category' : categories.name})
+#--------------------------------API-------------------------------#
 
 @login_required              #позволяет не зарегистрированному пользователю добавить товар в корзину
 def basket_add(request, product_id):

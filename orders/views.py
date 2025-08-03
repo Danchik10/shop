@@ -16,7 +16,7 @@ def order(request):
         return redirect('products:index')
 
     total_price = sum(item.product.price*item.quantity for item in basket_items)
-    if request.method == 'POST':
+    if request.method == 'POST':        #при отправке заказа
         form = OrderForm(request.POST)      #Создаёт экземпляр формы с переданными данными
         if form.is_valid():
             # Создаём и сохраняем заказ
@@ -38,7 +38,7 @@ def order(request):
             except Exception as e:
                 print(f"Error saving order: {e}")
 
-    else:                                                       #Обработка GET-запроса (первое открытие страницы)
+    else:                                                       #При открытии формы об оформлении заказа(первое открытие страницы)
         form=OrderForm(initial={'payment_method' : 'card'})     
 
     context = {

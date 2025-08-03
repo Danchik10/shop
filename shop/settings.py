@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'products',
     'users',
     'orders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/users/login/'
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # По умолчанию: чтение для всех, запись для авторизованных
+    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.SessionAuthentication',  # Для работы через браузер (CSRF)
+    #     'rest_framework.authentication.BasicAuthentication',    # Для простой аутентификации (логин/пароль)
+        # 'rest_framework.authentication.TokenAuthentication', # Если используете токены (нужно установить `rest_framework.authtoken`)
+    # ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,  # Пагинация по умолчанию
+}
 
 # CACHES = {
 #     "default": {
